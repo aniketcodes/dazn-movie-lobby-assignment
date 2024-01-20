@@ -21,6 +21,7 @@ import { Roles } from 'src/guards/roles.decorator';
 import { Role } from 'src/guards/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { SearchMovieDto } from './dto/search-movie.dto';
+import { MovieIdDto } from './dto/common.dto';
 
 @Controller('movies')
 @UseGuards(RolesGuard)
@@ -104,12 +105,12 @@ export class MoviesController {
   @Put(':id')
   @Roles(Role.Admin)
   async update(
-    @Param('id') id: string,
+    @Param() params: MovieIdDto,
     @Body() updateMovieDto: UpdateMovieDto,
   ) {
     try {
       const result: Movie | undefined = (await this.moviesService.update(
-        id,
+        params?.id,
         updateMovieDto,
       )) as Movie | undefined;
 
@@ -133,9 +134,9 @@ export class MoviesController {
 
   @Delete(':id')
   @Roles(Role.Admin)
-  async delete(@Param('id') id: string) {
+  async delete(@Param() params: MovieIdDto) {
     try {
-      const result = await this.moviesService.delete(id);
+      const result = await this.moviesService.delete(params?.id);
 
       if (result?.deletedCount == 0) {
         throw new NotFoundException('Movie Not found');
