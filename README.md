@@ -34,9 +34,6 @@ To view the test cases, please checkout to feature/testCases
 # unit tests
 $ npm run test
 
-# e2e tests
-$ npm run test:e2e
-
 # test coverage
 $ npm run test:cov
 ```
