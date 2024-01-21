@@ -1,5 +1,5 @@
 ## Setup
-Create a .env file and populate the contents from .env.sample
+Create a .env file and populate the contents from .env.example
 
 ## Installation
 
