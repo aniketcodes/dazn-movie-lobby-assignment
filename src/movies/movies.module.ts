@@ -3,7 +3,7 @@ import { MoviesService } from './movies.service';
 import { MoviesController } from './movies.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MovieSchema } from './schemas/movies.schema';
-import { ResponseHandlerService } from 'src/helpers/response-handler.service';
+import { ResponseHandlerService } from '../helpers/response-handler.service';
 
 @Module({
   imports: [

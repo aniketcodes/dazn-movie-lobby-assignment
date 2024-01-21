@@ -62,12 +62,6 @@ export class ResponseHandlerService {
         case HttpStatus.SERVICE_UNAVAILABLE: {
           throw new HttpException(response, HttpStatus.SERVICE_UNAVAILABLE);
         }
-        case HttpStatus.UNAUTHORIZED: {
-          throw new HttpException(response, HttpStatus.UNAUTHORIZED);
-        }
-        case HttpStatus.UNAUTHORIZED: {
-          throw new HttpException(response, HttpStatus.UNAUTHORIZED);
-        }
         default: {
           throw new HttpException(response, parseInt(statusCode));
         }

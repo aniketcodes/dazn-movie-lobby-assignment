@@ -14,12 +14,12 @@ import {
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
-import { ResponseHandlerService } from 'src/helpers/response-handler.service';
+import { ResponseHandlerService } from '../helpers/response-handler.service';
 import { Movie } from './interfaces/movies.interface';
 import { ResponseObject } from './def/response.def';
-import { Roles } from 'src/guards/roles.decorator';
-import { Role } from 'src/guards/roles.enum';
-import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from '../guards/roles.decorator';
+import { Role } from '../guards/roles.enum';
+import { RolesGuard } from '../guards/roles.guard';
 import { SearchMovieDto } from './dto/search-movie.dto';
 import { MovieIdDto } from './dto/common.dto';
 import {
@@ -135,7 +135,7 @@ export class MoviesController {
       const result: Movie[] = (await this.moviesService.findAll()) as Movie[];
 
       const response: ResponseObject<Movie[]> = {
-        status: HttpStatus.CREATED,
+        status: HttpStatus.OK,
         message: 'Movies fetched',
         data: result,
       };
