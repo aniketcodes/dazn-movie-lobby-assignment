@@ -28,6 +28,8 @@ $ npm run start:prod
 
 ## Test
 
+To view the test cases, please checkout to feature/testCases
+
 ```bash
 # unit tests
 $ npm run test
