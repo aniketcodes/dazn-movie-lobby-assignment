@@ -1,6 +1,12 @@
 ## Setup
 Create a .env file and populate the contents from .env.example
 
+## Docker
+```bash
+$ docker build -t dazn-movie-lobby-assignment .
+$ docker run -p 3000:3000 dazn-movie-lobby-assignment
+```
+
 ## Installation
 
 ```bash
