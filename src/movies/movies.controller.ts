@@ -22,6 +22,13 @@ import { Role } from 'src/guards/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { SearchMovieDto } from './dto/search-movie.dto';
 import { MovieIdDto } from './dto/common.dto';
+import {
+  ApiHeader,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 @Controller('movies')
 @UseGuards(RolesGuard)
@@ -33,6 +40,23 @@ export class MoviesController {
 
   @Post()
   @Roles(Role.Admin)
+  @ApiOperation({ summary: 'Create a new movie' })
+  @ApiHeader({
+    name: 'role',
+    description: 'Pass admin for admin roles else null',
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Movie created successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal Server Error',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'Requires admin role',
+  })
   async create(
     @Body() createMovieDto: CreateMovieDto,
   ): Promise<ResponseObject<Movie>> {
@@ -56,6 +80,25 @@ export class MoviesController {
   }
 
   @Get('/search')
+  @ApiOperation({ summary: 'Returns an array of movies based on search' })
+  @ApiQuery({
+    name: 'name',
+    example: 'dictator',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'genre',
+    example: 'comedy',
+    required: false,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Movies fetched',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal Server Error',
+  })
   async search(@Query() searchMovieDto: SearchMovieDto) {
     try {
       const result: Movie[] = (await this.moviesService.search(
@@ -63,7 +106,7 @@ export class MoviesController {
       )) as Movie[];
 
       const response: ResponseObject<Movie[]> = {
-        status: HttpStatus.CREATED,
+        status: HttpStatus.OK,
         message: 'Movies fetched',
         data: result,
       };
@@ -78,6 +121,15 @@ export class MoviesController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Returns all the movies' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Movies fetched',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal Server Error',
+  })
   async findAll() {
     try {
       const result: Movie[] = (await this.moviesService.findAll()) as Movie[];
@@ -97,13 +149,34 @@ export class MoviesController {
     }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.moviesService.findOne(+id);
-  }
-
   @Put(':id')
   @Roles(Role.Admin)
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '65aca09ebc8fdb0c060c422a (MongoId)',
+  })
+  @ApiOperation({ summary: 'Updates movie' })
+  @ApiHeader({
+    name: 'role',
+    description: 'Pass admin for admin roles else null',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Movie updated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Movie not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal Server Error',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'Requires admin role',
+  })
   async update(
     @Param() params: MovieIdDto,
     @Body() updateMovieDto: UpdateMovieDto,
@@ -134,6 +207,32 @@ export class MoviesController {
 
   @Delete(':id')
   @Roles(Role.Admin)
+  @ApiOperation({ summary: 'Deletes movie' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '65aca09ebc8fdb0c060c422a (MongoId)',
+  })
+  @ApiHeader({
+    name: 'role',
+    description: 'Pass admin for admin roles else null',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Movie deleted',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Movie not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal Server Error',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'Requires admin role',
+  })
   async delete(@Param() params: MovieIdDto) {
     try {
       const result = await this.moviesService.delete(params?.id);
